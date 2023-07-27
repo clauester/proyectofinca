@@ -218,7 +218,7 @@ public class Propietarios extends javax.swing.JPanel {
         int selectedRow = tbl_propietarios.getSelectedRow();
 //        int selectedColumn = tbl_propietarios.getSelectedColumn();
 
-        if (selectedRow > 0) {
+        if (selectedRow >= 0) {
             Object selectedValue = tbl_propietarios.getValueAt(selectedRow, 0);
             int valueId = (int) selectedValue;
 

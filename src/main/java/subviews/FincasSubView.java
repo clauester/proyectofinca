@@ -20,8 +20,8 @@ public class FincasSubView extends javax.swing.JFrame {
     CN_GetData getdata = new CN_GetData();
     private final CN_Connection db_connection = new CN_Connection();
     
-    public void SetTexto(){
-            lblTexto.setText(tipo + " Finca");
+    public void SetTexto() {
+        lblTexto.setText((tipo + " Finca").toUpperCase());
 
     }
     

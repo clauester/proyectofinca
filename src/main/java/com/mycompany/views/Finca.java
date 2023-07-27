@@ -259,7 +259,7 @@ public class Finca extends javax.swing.JPanel {
    int selectedRow = tblFinca.getSelectedRow();
 //        int selectedColumn = tbl_propietarios.getSelectedColumn();
 
-        if (selectedRow > 0) {
+        if (selectedRow >= 0) {
             Object selectedValue = tblFinca.getValueAt(selectedRow, 0);
             int valueId = (int) selectedValue;
 
