@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clases;
+package modelo;
 
 /**
  *
@@ -15,6 +15,9 @@ public class Finca {
     int tamanio;
     String codigo;
     String direccion;
+
+    public Finca() {
+    }
 
     public Finca(int id, String nombre, int tamanio, String codigo, String direccion) {
         this.id = id;
@@ -62,6 +65,11 @@ public class Finca {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        return "nombre Finca: " + nombre + ", codigo: " + codigo + '}';
     }
     
     

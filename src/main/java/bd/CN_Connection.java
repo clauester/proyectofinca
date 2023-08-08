@@ -17,13 +17,16 @@ import java.util.logging.Logger;
  *
  * @author Miguel Davila
  */
+// Clase que se encarga de la conexion con la base de datos
 public class CN_Connection {
 
+    //datos para la conexion a la base de datos
     private final String USUARIO = "root";
     private final String CONTRASENIA = "a123456";
     public static final String URL = "jdbc:mysql://localhost:3306/proyecto_const_soft";
     public static Connection conexion;
 
+    //metodo que incia la conexion a la base de datos
     public Connection OpenConnection() {
 
         try {
@@ -38,6 +41,8 @@ public class CN_Connection {
         return conexion;
 
     }
+    
+    //metodo que cierra la conexion con la base de datos
 
     public void CloseConnection() {
 

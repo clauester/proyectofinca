@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clases;
+package modelo;
 
 /**
  *
  * @author Miguel Davila
  */
 public class Persona {
+    int id_persona;
     String cedula;
     String nombre;
     String apellido;
@@ -16,6 +17,22 @@ public class Persona {
     String telefono;
     String sexo;
     String correo;
+    
+      public Persona() {
+    }
+
+    public Persona(int id_persona, String cedula, String nombre, String apellido, String direccion, String telefono, String sexo, String correo) {
+        this.id_persona = id_persona;
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.sexo = sexo;
+        this.correo = correo;
+    }
+
+  
 
     public Persona(String cedula, String nombre, String apellido, String direccion, String telefono, String sexo, String correo) {
         this.cedula = cedula;
@@ -26,6 +43,8 @@ public class Persona {
         this.sexo = sexo;
         this.correo = correo;
     }
+
+  
 
     public String getCedula() {
         return cedula;
@@ -81,6 +100,19 @@ public class Persona {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public int getId_persona() {
+        return id_persona;
+    }
+
+    public void setId_persona(int id_persona) {
+        this.id_persona = id_persona;
+    }
+
+    @Override
+    public String toString() {
+        return "cedula: " + cedula + ", nombres: " + nombre + " " +apellido;
     }
     
     

@@ -97,6 +97,11 @@ public class Finca extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("BUSCAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         tblFinca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -106,6 +111,7 @@ public class Finca extends javax.swing.JPanel {
 
             }
         ));
+        tblFinca.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(tblFinca);
 
         jButton2.setBackground(new java.awt.Color(13, 71, 161));
@@ -284,6 +290,39 @@ public class Finca extends javax.swing.JPanel {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ VaciarTabla();
+        
+        try {
+             String buscador = txtBuscar.getText();
+        ResultSet data = getdata.SearchFinca(buscador);
+            ResultSetMetaData dataPropietarios = data.getMetaData();
+            DefaultTableModel model = (DefaultTableModel) tblFinca.getModel();
+            
+            int cols = dataPropietarios.getColumnCount();
+            for (int columnIndex = 1; columnIndex <= cols; columnIndex++) {
+                model.addColumn(dataPropietarios.getColumnName(columnIndex));
+            }
+
+            while (data.next()) {
+                Object[] rowData = new Object[cols];
+                for (int columnIndex = 1; columnIndex <= cols; columnIndex++) {
+                    rowData[columnIndex - 1] = data.getObject(columnIndex);
+                }
+                model.addRow(rowData);
+            }
+            
+            tblFinca.setModel(model);
+            db_connection.CloseConnection();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

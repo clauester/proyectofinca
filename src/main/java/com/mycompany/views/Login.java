@@ -4,14 +4,23 @@
  */
 package com.mycompany.views;
 
+import bd.CN_GetData;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import com.mycompany.ifinc.Dashboard;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Miguel Davila
+ * 
  */
+
+// Jframe que se encarga de la autenticacion de los usuarios
 public class Login extends javax.swing.JFrame {
+
+    CN_GetData getdata = new CN_GetData();
 
     /**
      * Creates new form Login
@@ -33,8 +42,8 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtcedula = new javax.swing.JTextField();
+        txtpassword = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -52,8 +61,8 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Cedula:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 62, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 268, 30));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 268, 30));
+        jPanel1.add(txtcedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 268, 30));
+        jPanel1.add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 268, 30));
 
         jButton1.setBackground(new java.awt.Color(13, 71, 161));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
@@ -87,13 +96,30 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        Dashboard dashboard = new Dashboard();
-        
-        dashboard.setVisible(true);
-        
-        this.setVisible(false);
+       //se captura los datos de los input para proceder a la autenticacion de los usuarios
+       
+        String cedula = txtcedula.getText();
+        String password = txtpassword.getText();
+        if (!cedula.isEmpty() && !password.isEmpty()) {
+            ResultSet resultado = getdata.IniciarSesion(cedula, password);
+            //System.out.println("el resultado es:  " + resultado);
+            try {
+                if (resultado.next()) {
+                  
+                    Dashboard dashboard = new Dashboard();
+                    dashboard.setVisible(true);
+                    this.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Credenciales Incorrectas");
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+                JOptionPane.showMessageDialog(null, "Credenciales Incorrectas");
+            }
 
+        } else {
+            JOptionPane.showMessageDialog(null, "Ambos campos tienen que estar llenos");
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -140,7 +166,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtcedula;
+    private javax.swing.JTextField txtpassword;
     // End of variables declaration//GEN-END:variables
 }

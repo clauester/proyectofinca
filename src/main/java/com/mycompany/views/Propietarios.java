@@ -6,7 +6,7 @@ package com.mycompany.views;
 
 import bd.CN_Connection;
 import bd.CN_GetData;
-import clases.Persona;
+import modelo.Persona;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -116,6 +116,7 @@ public class Propietarios extends javax.swing.JPanel {
 
             }
         ));
+        tbl_propietarios.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(tbl_propietarios);
 
         jButton3.setBackground(new java.awt.Color(13, 71, 161));

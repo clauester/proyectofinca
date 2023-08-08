@@ -4,17 +4,68 @@
  */
 package com.mycompany.views;
 
+import bd.CN_Connection;
+import bd.CN_GetData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import subviews.RecibosSubView;
+import subviews.ServicioSubView;
+
 /**
  *
  * @author HP
  */
 public class Recibos extends javax.swing.JPanel {
 
+    CN_GetData getdata = new CN_GetData();
+    
+
+    private final CN_Connection db_connection = new CN_Connection();
+
+    public void llenar() {
+        try {
+            ResultSet data = getdata.GetRecibos();
+            ResultSetMetaData dataPropietarios = data.getMetaData();
+            DefaultTableModel model = (DefaultTableModel) tblrecibos.getModel();
+
+            int cols = dataPropietarios.getColumnCount();
+            for (int columnIndex = 1; columnIndex <= cols; columnIndex++) {
+                model.addColumn(dataPropietarios.getColumnName(columnIndex));
+            }
+
+            while (data.next()) {
+                Object[] rowData = new Object[cols];
+                for (int columnIndex = 1; columnIndex <= cols; columnIndex++) {
+                    rowData[columnIndex - 1] = data.getObject(columnIndex);
+                }
+                model.addRow(rowData);
+            }
+            tblrecibos.setModel(model);
+            db_connection.CloseConnection();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public void VaciarTabla() {
+        DefaultTableModel model = (DefaultTableModel) tblrecibos.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+    }
     /**
      * Creates new form Recibos
      */
     public Recibos() {
         initComponents();
+        jButton4.setVisible(false);
+        jButton2.setVisible(false);
+        jButton1.setVisible(false);
+        txtBuscar.setVisible(false);
+         llenar();
     }
 
     /**
@@ -30,7 +81,7 @@ public class Recibos extends javax.swing.JPanel {
         txtBuscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblrecibos = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -46,18 +97,16 @@ public class Recibos extends javax.swing.JPanel {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("BUSCAR");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblrecibos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblrecibos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(tblrecibos);
 
         jButton2.setBackground(new java.awt.Color(13, 71, 161));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -73,11 +122,21 @@ public class Recibos extends javax.swing.JPanel {
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("EDITAR");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(13, 71, 161));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("BORRAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,14 +151,14 @@ public class Recibos extends javax.swing.JPanel {
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(mensaje1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(mensaje1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +180,52 @@ public class Recibos extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+         RecibosSubView pv = new RecibosSubView("agregar");
+        pv.setVisible(true);
+        
+        
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+  int selectedRow = tblrecibos.getSelectedRow();
+        System.out.println("Valor seleccionado: " + selectedRow);
+//        int selectedColumn = tbl_propietarios.getSelectedColumn
+        if (selectedRow >= 0) {
+            Object selectedValue = tblrecibos.getValueAt(selectedRow, 0);
+            int valueId = (int) selectedValue;
+
+            System.out.println("Valor seleccionado: " + valueId);
+
+           RecibosSubView servicioView = new RecibosSubView("actualizar", valueId);
+            servicioView.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Tiene que selecconar un casilla");
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+ int selectedRow = tblrecibos.getSelectedRow();
+//        int selectedColumn = tbl_propietarios.getSelectedColumn();
+
+        if (selectedRow >= 0) {
+            Object selectedValue = tblrecibos.getValueAt(selectedRow, 0);
+            int valueId = (int) selectedValue;
+
+            System.out.println("Valor seleccionado: " + valueId);
+            getdata.DeleteRecibo(valueId);
+        } else {
+            JOptionPane.showMessageDialog(null, "Tiene que selecconar un casilla");
+        }
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -130,8 +234,8 @@ public class Recibos extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private java.awt.Label mensaje1;
+    private javax.swing.JTable tblrecibos;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

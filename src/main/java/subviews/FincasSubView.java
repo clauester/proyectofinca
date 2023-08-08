@@ -6,7 +6,7 @@ package subviews;
 
 import bd.CN_Connection;
 import bd.CN_GetData;
-import clases.Finca;
+import modelo.Finca;
 
 
 /**
@@ -22,7 +22,9 @@ public class FincasSubView extends javax.swing.JFrame {
     
     public void SetTexto() {
         lblTexto.setText((tipo + " Finca").toUpperCase());
-
+         if(tipo.equals("actualizar")){
+        txtIdPropietario.setEnabled(false);
+         }
     }
     
   

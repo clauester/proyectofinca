@@ -6,7 +6,7 @@ package subviews;
 
 import bd.CN_Connection;
 import bd.CN_GetData;
-import clases.Persona;
+import modelo.Persona;
 import java.sql.ResultSet;
 
 /**
